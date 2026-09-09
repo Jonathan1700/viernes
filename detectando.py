@@ -1,10 +1,11 @@
 """
-Paso 3: Detección en tiempo real usando el clasificador Haar Cascade
-entrenado (cascade.xml).
+Paso 3: Detección en tiempo real usando un clasificador Haar Cascade.
 
-Este script SOLO funciona si ya tienes un archivo 'cascade.xml' entrenado
-para el objeto que quieres detectar (ver README.md, sección de
-entrenamiento). Puedes cambiar libremente:
+Por defecto usa el detector de caras que ya viene incluido con
+opencv-python (no requiere entrenar ni descargar nada). Si en vez de caras
+quieres detectar tu propio objeto, entrena un 'cascade.xml' (ver README.md,
+sección de entrenamiento), colócalo junto a este script y cambia
+CASCADE_PATH para que apunte a ese archivo. Puedes cambiar libremente:
   - CASCADE_PATH -> qué clasificador (=qué objeto) usar
   - LABEL         -> el texto que se dibuja sobre la detección
   - scaleFactor / minNeighbors / minSize -> sensibilidad de la detección
@@ -15,13 +16,15 @@ import sys
 
 import cv2
 
-CASCADE_PATH = 'cascade.xml'
-LABEL = 'Objeto'
+# Detector de caras incluido con opencv-python. Para usar tu propio
+# cascade.xml entrenado, cambia esta línea por: CASCADE_PATH = 'cascade.xml'
+CASCADE_PATH = os.path.join(cv2.data.haarcascades, 'haarcascade_frontalface_default.xml')
+LABEL = 'Cara'
 
 if not os.path.exists(CASCADE_PATH):
     sys.exit(
-        f"No se encontró '{CASCADE_PATH}'. Primero debes entrenar tu propio "
-        "clasificador (ver README.md) y colocarlo junto a este script."
+        f"No se encontró '{CASCADE_PATH}'. Si usas tu propio clasificador, "
+        "primero entrénalo (ver README.md) y colócalo junto a este script."
     )
 
 objetoClassif = cv2.CascadeClassifier(CASCADE_PATH)
